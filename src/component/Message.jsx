@@ -1,7 +1,7 @@
-export default function Message({ role, text }) {
+export default function Message({ role, content }) {
   return (
     <div className={`msg ${role}`}>
-      {text}
+      {content}
       <style>{`
         .msg {
           max-width: 75%;
