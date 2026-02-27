@@ -14,10 +14,18 @@ export default function App() {
   const [activeId, setActiveId] = useState(null);
   const [theme, setTheme] = useState("light");
   const [loading, setLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState(() => {
+    return localStorage.getItem('chat_search') || '';
+  });
+
 
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(conversations));
   }, [conversations]);
+
+  useEffect(() => {
+    localStorage.setItem('chat_search', searchQuery);
+  }, [searchQuery]);
 
   const createNewChat = () => {
     const newChat = {
@@ -112,6 +120,8 @@ export default function App() {
         activeId={activeId}
         onNewChat={createNewChat}
         onSelect={setActiveId}
+        searchQuery={searchQuery}
+        onSearchChange={setSearchQuery}
       />
 
       <ChatArea

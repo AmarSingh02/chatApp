@@ -2,7 +2,7 @@ import InputBar from "./InputBox";
 import Message from "./Message";
 
 
-export default function ChatArea({ chat, onSend, theme, setTheme }) {
+export default function ChatArea({ chat, onSend, theme, setTheme, loading }) {
   return (
     <main className="chat-area">
       <header className="top-bar">
@@ -18,9 +18,15 @@ export default function ChatArea({ chat, onSend, theme, setTheme }) {
         {chat?.messages.map((m) => (
           <Message key={m.id} {...m} />
         ))}
+
+        {loading && (
+          <div className="loader">
+            <span>Thinking...</span>
+          </div>
+        )}
       </div>
 
-      <InputBar onSend={onSend} disabled={false} />
+      <InputBar onSend={onSend} disabled={loading} />
     </main>
   );
 }

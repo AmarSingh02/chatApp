@@ -1,9 +1,9 @@
 
-import React, { useState, useMemo } from 'react'
+import React, { useMemo } from 'react'
 import './style.css'
 
-export default function Sidebar({ conversations = [], activeId, onNewChat, onSelect }) {
-  const [query, setQuery] = useState('')
+export default function Sidebar({ conversations = [], activeId, onNewChat, onSelect, searchQuery, onSearchChange }) {
+  const query = searchQuery || ''
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase()
@@ -23,7 +23,7 @@ export default function Sidebar({ conversations = [], activeId, onNewChat, onSel
         className="search"
         placeholder="Search chats..."
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={(e) => onSearchChange && onSearchChange(e.target.value)}
       />
 
       <div className="chat-list">

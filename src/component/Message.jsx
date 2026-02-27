@@ -1,13 +1,19 @@
+import remarkGfm from "remark-gfm";
+import ReactMarkdown from "react-markdown";
+
 export default function Message({ role, content }) {
   return (
     <div className={`msg ${role}`}>
-      {content}
+       <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        {content}
+      </ReactMarkdown>
       <style>{`
         .msg {
           max-width: 75%;
           padding: 10px 12px;
           border-radius: 8px;
-          line-height: 1.4;
+          line-height: 1.4; box-shadow: 0 1px 0px #0000001c;
+    border: 1px solid #80808030;
         }
         .msg.user {
           background: var(--message-user-bg);
