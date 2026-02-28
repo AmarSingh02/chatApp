@@ -96,7 +96,7 @@
 .chat-area {
   display: flex;
   flex-direction: column;
-  background: var(--chat-area-bg);
+  
   color: var(--text-primary);
 }
 
@@ -116,7 +116,7 @@
   0%, 100% { opacity: 1; }
   50% { opacity: 0.3; }
 }
-}
+
 
 .top-bar {
   display: flex;
@@ -142,6 +142,23 @@
   transition: all 0.2s ease;
 }
 
+.theme-toggle {
+  background: transparent;
+  border: none;
+  font-size: 1.4rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  transition: transform 0.2s;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.2);
+}
+
+.theme-toggle:focus {
+  outline: 2px solid var(--button-bg);
+  outline-offset: 2px;
+}
 .top-bar select:focus {
   outline: none;
   box-shadow: 0 0 0 3px rgba(128, 0, 128, 0.1);
@@ -174,6 +191,65 @@
   background: var(--text-secondary);
 }
 
+/* Copy button in code blocks */
+.code-block {
+  position: relative;
+}
+
+.copy-btn {
+  position: absolute;
+  right: 8px;
+  top: 8px;
+  background: rgba(0,0,0,0.06);
+  border: 1px solid rgba(0,0,0,0.08);
+  color: var(--text-primary);
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  background: #6a006a;
+    color: #fff;
+}
+
+.copy-btn:hover {
+  background: rgba(0,0,0,0.12);
+  color: #fff;
+}
+
+.copy-btn:focus {
+  outline: 2px solid var(--button-bg);
+}
+
+/* Scroll to top button */
+.scroll-to-top {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: var(--button-bg);
+  color: var(--button-text);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  font-size: 1.2rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  z-index: 999;
+}
+
+.scroll-to-top:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+}
+
+.scroll-to-top:active {
+  transform: translateY(-2px);
+}
+
 .msg {
   max-width: 70%;
   padding: 12px 16px;
@@ -197,14 +273,47 @@
   border: 1px solid var(--border-color);
 }
 
+/* Code block styling */
+.msg pre,
+.messages pre,
+pre {
+  background: #fff !important;
+  color: #000;
+  padding: 12px;
+  border-radius: 8px;
+  overflow: auto;
+  border: 1px solid var(--border-color);
+  white-space: pre-wrap;
+}
+
+.messages .msg pre,
+.messages pre code,
+pre,
+pre code {
+  background-color: #fff !important;
+  color: #000 !important;
+}
+
+.copy-btn{
+    display: flex;
+    justify-content: end;
+    align-items: end;
+    background: #6a006a;
+    color: #fff;
+    text-align: center;
+}
 /* Input Bar */
 .input-bar {
   display: flex;
-  padding: 16px 20px;
-  gap: 12px;
   border-top: 1px solid var(--border-color);
   background: var(--input-bg);
   align-items: center;
+  display: flex;
+    padding: 12px 20px;
+    gap: 30px;
+    width: 90%;
+    margin: 0 auto;
+
 }
 
 .input-bar input {
@@ -255,6 +364,29 @@
 .input-bar button:disabled {
   opacity: 0.5;
   cursor: not-allowed;
+}
+
+.scroll-to-top {
+  position: fixed;
+  bottom: 15%;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  background:var(--button-bg);
+  color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  transition: transform 0.2s ease, opacity 0.2s ease;
+  z-index: 9999;
+}
+
+.scroll-to-top:hover {
+  transform: translateY(-3px);
+  background-color: #000;
+  color: #fff;
 }
 
 /* Responsive */

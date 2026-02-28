@@ -123,7 +123,7 @@ html, body, #root {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: var(--chat-area-bg);
+  
   transition: background-color 0.3s;
 }
 
@@ -131,12 +131,13 @@ html, body, #root {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 20px;
-  background: var(--button-bg);
-  color: var(--button-text);
-  border-bottom: 1px solid var(--border-color);
-  border-radius: 0;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+ background: var(--input-bg);
+  color: var(--text-primary);
+  padding: 10px 30px;
+    border-bottom: 1px solid var(--border-color);
+    /* border-radius: 0;
+    width: 90%;
+    margin: 0 auto; */
 }
 
 .top-bar select {
@@ -174,9 +175,9 @@ html, body, #root {
 
 .input-bar input {
   flex: 1;
-  padding: 20px;
+  padding: 15px 30px;
   border: 1px solid var(--input-border);
-  border-radius: 4px;
+  border-radius: 50px;
   background: var(--input-bg);
   color: var(--text-primary);
   transition: background-color 0.3s, color 0.3s;
@@ -214,7 +215,8 @@ html, body, #root {
   flex: 1;
   display: flex;
   flex-direction: column;
-  background: #020617;
+  background-color: #fff;
+ 
 }
 
 .messages {
@@ -235,16 +237,20 @@ html, body, #root {
 }
 
 .message.user {
-  background: #2563eb;
-  color: white;
+  box-shadow: 0 1px 0px #0000001c;
+    border: 1px solid #80808030;
   margin-left: auto;
-  border-bottom-right-radius: 4px;
+
+  p{
+    margin: 0px !important;
+  }
+
 }
 
 .message.assistant {
-  background: #020617;
+  /* background: #020617; */
   /* border: 1px solid #1e293b; */
-  color: #e5e7eb;
+  /* color: #e5e7eb; */
   margin-right: auto;
   border-bottom-left-radius: 4px;
    box-shadow: 0 1px 0px #0000001c;

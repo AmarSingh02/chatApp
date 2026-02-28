@@ -1,66 +1,47 @@
-// import remarkGfm from "remark-gfm";
-// import ReactMarkdown from "react-markdown";
-
-// export default function Message({ role, content }) {
-//   return (
-//     <div className={`msg ${role}`}>
-//        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-//         {content}
-//       </ReactMarkdown>
-//       <style>{`
-//         .msg {
-//           max-width: 75%;
-//           padding: 10px 12px;
-//           border-radius: 8px;
-//           line-height: 1.4; box-shadow: 0 1px 0px #0000001c;
-//     border: 1px solid #80808030;
-//         }
-//         .msg.user {
-//           background: var(--message-user-bg);
-//           margin-left: auto;
-//           color: var(--text-primary);
-//         }
-//         .msg.bot {
-//           background: var(--message-bot-bg);
-//           margin-right: auto;
-//           color: var(--text-primary);
-//           border: 1px solid var(--border-color);
-//         }
-//       `}</style>
-//     </div>
-//   );
-// }
 
 
 
+import React, { useState, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
+
+function CodeBlock({ inline, children }) {
+  const text = Array.isArray(children) ? children.join("") : String(children);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (!copied) return;
+    const t = setTimeout(() => setCopied(false), 3000);
+    return () => clearTimeout(t);
+  }, [copied]);
+
+  if (inline) return <code>{children}</code>;
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(true);
+    } catch (e) {
+      console.error("Copy failed", e);
+    }
+  };
+
+  return (
+    <div className="code-block">
+      <button className="copy-btn" onClick={handleCopy} aria-label="Copy code">
+        {copied ? "Copied" : "Copy"}
+      </button>
+      <pre>
+        <code>{text}</code>
+      </pre>
+    </div>
+  );
+}
 
 export default function Message({ role, content }) {
   return (
     <div className={`message ${role}`}>
-      <ReactMarkdown
-        remarkPlugins={[remarkGfm]}
-        components={{
-          code({ inline, children }) {
-            if (inline) return <code>{children}</code>;
-
-            return (
-              <div className="code-block">
-                <button
-                  className="copy-btn"
-                  onClick={() => navigator.clipboard.writeText(children)}
-                >
-                  Copy
-                </button>
-                <pre>
-                  <code>{children}</code>
-                </pre>
-              </div>
-            );
-          },
-        }}
-      >
+      <ReactMarkdown remarkPlugins={[remarkGfm]} components={{ code: CodeBlock }}>
         {content}
       </ReactMarkdown>
     </div>

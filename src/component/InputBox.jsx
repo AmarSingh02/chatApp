@@ -1,4 +1,5 @@
 import { useState } from "react";
+   import { FaLocationArrow } from "react-icons/fa";
 
 export default function InputBar({ onSend, disabled }) {
   const [text, setText] = useState("");
@@ -19,7 +20,8 @@ export default function InputBar({ onSend, disabled }) {
         onKeyDown={(e) => e.key === "Enter" && handleSend()}
       />
       <button onClick={handleSend} >
-        Send
+     
+        <FaLocationArrow/>
       </button>
     </div>
   );

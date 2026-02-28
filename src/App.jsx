@@ -11,7 +11,9 @@ export default function App() {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [activeId, setActiveId] = useState(null);
+  const [activeId, setActiveId] = useState(() => {
+    return localStorage.getItem('active_chat') ? Number(localStorage.getItem('active_chat')) : null;
+  });
   const [theme, setTheme] = useState("light");
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState(() => {
@@ -27,6 +29,14 @@ export default function App() {
     localStorage.setItem('chat_search', searchQuery);
   }, [searchQuery]);
 
+  useEffect(() => {
+    if (activeId !== null) {
+      localStorage.setItem('active_chat', activeId.toString());
+    } else {
+      localStorage.removeItem('active_chat');
+    }
+  }, [activeId]);
+
   const createNewChat = () => {
     const newChat = {
       id: Date.now(),
@@ -39,79 +49,6 @@ export default function App() {
 
   const activeChat = conversations.find((c) => c.id === activeId);
 
-  // const sendMessage = async (text) => {
-  //   if (!text.trim()) return;
-
-  //   let chatId = activeId;
-
-  //   // If no active chat, create one
-  //   if (!activeChat) {
-  //     chatId = Date.now();
-  //     const newChat = {
-  //       id: chatId,
-  //       title: text.length > 30 ? text.slice(0, 30) + "..." : text,
-  //       messages: [],
-  //     };
-  //     setConversations((prev) => [newChat, ...prev]);
-  //     setActiveId(chatId);
-  //   }
-
-  //   const userMsg = { id: Date.now(), role: "user", content: text };
-
-  //   setConversations((prev) =>
-  //     prev.map((chat) =>
-  //       chat.id === chatId
-  //         ? { ...chat, messages: [...chat.messages, userMsg] }
-  //         : chat
-  //     )
-  //   );
-
-  //   setLoading(true);
-
-  //   try {
-  //     const res = await fetch("http://localhost:3000/api/chat", {
-  //       method: "POST",
-  //       headers: { "Content-Type": "application/json" },
-  //       body: JSON.stringify({
-  //         messages: [{ role: "user", content: text }],
-  //       }),
-  //     });
-
-  //     const data = await res.json();
-
-  //     const botMsg = {
-  //       id: Date.now() + 1,
-  //       role: "assistant",
-  //       content: data.reply,
-  //     };
-
-  //     setConversations((prev) =>
-  //       prev.map((chat) =>
-  //         chat.id === chatId
-  //           ? { ...chat, messages: [...chat.messages, botMsg] }
-  //           : chat
-  //       )
-  //     );
-  //   } catch (err) {
-  //     console.error("Chat API error:", err);
-
-  //     const errorMsg = {
-  //       id: Date.now() + 2,
-  //       role: "assistant",
-  //       content: " Failed to get response from AI.",
-  //     };
-
-  //     setConversations((prev) =>
-  //       prev.map((chat) =>
-  //         chat.id === chatId
-  //           ? { ...chat, messages: [...chat.messages, errorMsg] }
-  //           : chat
-  //       )
-  //     );
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
   const sendMessage = async (text) => {
   if (!text.trim()) return;
 
@@ -122,7 +59,7 @@ export default function App() {
   if (!activeChat) {
     const newChat = {
       id: chatId,
-      title: text.length > 30 ? text.slice(0, 30) + "..." : text,
+      title: text.length > 30 ? text.slice(0, 20) + "..." : text,
       messages: [],
     };
     setConversations((prev) => [newChat, ...prev]);
@@ -132,11 +69,15 @@ export default function App() {
   const userMsg = { id: Date.now(), role: "user", content: text };
   const emptyBotMsg = { id: botId, role: "assistant", content: "" };
 
-  // Optimistically add user + empty bot message
+  // Optimistically add user + empty bot message, update title
   setConversations((prev) =>
     prev.map((chat) =>
       chat.id === chatId
-        ? { ...chat, messages: [...chat.messages, userMsg, emptyBotMsg] }
+        ? {
+            ...chat,
+            title: text.length > 30 ? text.slice(0, 30) + "..." : text,
+            messages: [...chat.messages, userMsg, emptyBotMsg],
+          }
         : chat
     )
   );
